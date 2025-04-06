@@ -24,7 +24,6 @@ metadata/_custom_type_script = "uid://bh2mk50gxsl62"
 offset_bottom = 242.0
 valueRange = Vector2(0, 100)
 domainRange = Vector2(-10, 10)
-pointsCount = 1000
 dataGroups = [SubResource("Resource_01x0b"), SubResource("Resource_amvyy")]
 pointsScale = 10.0
 refreshOffset = 0.002

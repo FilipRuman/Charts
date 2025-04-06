@@ -16,7 +16,7 @@ public partial class GraphMain : Node {
     [Export] private Label domainNameLabel;
 
 
-    [Export] private bool reGeneratePoints;
+    [Export] private bool ReSetupAll;
     [Export] private bool generateRandomData;
 
 
@@ -25,7 +25,8 @@ public partial class GraphMain : Node {
 
     [Export] public DataGroup[] dataGroups;
 
-
+    [Export] public Control dataGroupVisualizationLayout;
+    [Export] public PackedScene dataGroupVisualizationpPrefab;
 
     [ExportGroup("Visuals")]
     [Export] private float pointsScale;
@@ -34,6 +35,21 @@ public partial class GraphMain : Node {
     [Export] private float refreshOffset = 1;
 
     private float refreshRateTimer = 0;
+
+    private void SpawnDataGroupVisualization(DataGroup dataGroup) {
+        var dataGroupVisualization = (DataGroupVisualization)dataGroupVisualizationpPrefab.Instantiate();
+        dataGroupVisualizationLayout.AddChild(dataGroupVisualization);
+        dataGroupVisualization.Setup(dataGroup.color, dataGroup.name);
+    }
+    private void SetupDataGroupVisualization() {
+        foreach (Node node in dataGroupVisualizationLayout.GetChildren()) {
+            node.QueueFree();
+        }
+
+        foreach (DataGroup dataGroup in dataGroups) {
+            SpawnDataGroupVisualization(dataGroup);
+        }
+    }
 
     public override void _Process(double delta) {
         valueNameLabel.Text = valueName;
@@ -53,9 +69,9 @@ public partial class GraphMain : Node {
         refreshRateTimer = 0;
 
 
-        if (reGeneratePoints) {
-            reGeneratePoints = false;
-            ReGeneratePoints();
+        if (ReSetupAll) {
+            ReSetupAll = false;
+            SetupAll();
         }
         if (generateRandomData) {
             generateRandomData = false;
@@ -115,8 +131,14 @@ public partial class GraphMain : Node {
         }
     }
 
-    private void ReGeneratePoints() {
+    public override void _Ready() {
+        SetupAll();
+        base._Ready();
+    }
+
+    private void SetupAll() {
         valueLineManager.ReSpawnAllLines();
+        SetupDataGroupVisualization();
 
         foreach (Control control in pointsParent.GetChildren()) {
             control.QueueFree();
