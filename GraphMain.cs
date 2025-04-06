@@ -1,0 +1,140 @@
+using Godot;
+using System.Collections.Generic;
+[Tool]
+public partial class GraphMain : Node {
+    [Export] private ValueLineManager valueLineManager;
+    [Export] private PackedScene pointPrefab;
+    [Export] private Control pointsParent;
+
+    /// X-Min Y-Max
+    [Export] private Vector2 valueRange;
+    [Export] private Vector2 domainRange;
+
+    [Export] private string valueName;
+    [Export] private string domainName;
+    [Export] private Label valueNameLabel;
+    [Export] private Label domainNameLabel;
+
+
+    [Export] private bool reGeneratePoints;
+    [Export] private bool generateRandomData;
+
+
+    [Export] public uint pointsCount;
+
+
+    [Export] public DataGroup[] dataGroups;
+
+
+
+    [ExportGroup("Visuals")]
+    [Export] private float pointsScale;
+
+
+    [Export] private float refreshOffset = 1;
+
+    private float refreshRateTimer = 0;
+
+    public override void _Process(double delta) {
+        valueNameLabel.Text = valueName;
+        domainNameLabel.Text = domainName;
+
+        foreach (DataGroup dataGroup in dataGroups) {
+            while (dataGroup.data.Count < pointsCount) {
+                dataGroup.data.Add(0);
+            }
+        }
+
+
+        if (refreshRateTimer < (float)refreshOffset) {
+            refreshRateTimer += (float)delta;
+            return;
+        }
+        refreshRateTimer = 0;
+
+
+        if (reGeneratePoints) {
+            reGeneratePoints = false;
+            ReGeneratePoints();
+        }
+        if (generateRandomData) {
+            generateRandomData = false;
+
+            for (uint i = 0; i < dataGroups.Length; i++) {
+                GenerateRandomData(i);
+            }
+        }
+
+        foreach (DataGroup dataGroup in dataGroups) {
+            RefreshPointsPositions(dataGroup);
+        }
+        base._Process(delta);
+    }
+
+    [Export] uint averagePoolSize = 4;
+    private List<float> dataSmoothingCache = new();
+    public void AddDataToEnd(float value, uint dataGroupIndex) {
+        dataSmoothingCache.Add(value);
+        if (dataSmoothingCache.Count < averagePoolSize)
+            return;
+        float sum = 0;
+        foreach (float v in dataSmoothingCache) {
+            sum += v;
+        }
+        dataGroups[dataGroupIndex].data.Add(sum / dataSmoothingCache.Count);
+        dataGroups[dataGroupIndex].data.RemoveAt(0);
+
+        dataSmoothingCache.Clear();
+    }
+    //TODO: public void AddDataForPosition(float value, float position)
+
+    private void RefreshPointsPositions(DataGroup dataGroup) {
+        float xPositionScale = pointsParent.Size.X / pointsCount;
+        float yPositionScale = pointsParent.Size.Y / (valueRange.Y - valueRange.X);
+        float yPositionOffset = -valueRange.X;
+
+
+        for (int i = 0; i < pointsCount; i++) {
+            Vector2 pos = new(xPositionScale * i, (dataGroup.data[i] + yPositionOffset) * yPositionScale);
+            dataGroup.points[i].SetPosition(new(pos.X, pointsParent.Size.Y - pos.Y), true);
+        }
+    }
+
+    public float ValueBasedOnPositionPercentage(float positionPercentage/* 0-1*/ , bool horizontal) {
+        if (!horizontal)
+            return Mathf.Lerp(valueRange.X, valueRange.Y, 1 - positionPercentage);
+
+        return Mathf.Lerp(domainRange.X, domainRange.Y, 1 - positionPercentage);
+    }
+
+
+    private void GenerateRandomData(uint dataGroupIndex) {
+        var rng = new RandomNumberGenerator();
+        for (int i = 0; i < pointsCount * averagePoolSize; i++) {
+            AddDataToEnd(rng.RandfRange(valueRange.X, valueRange.Y), dataGroupIndex);
+        }
+    }
+
+    private void ReGeneratePoints() {
+        valueLineManager.ReSpawnAllLines();
+
+        foreach (Control control in pointsParent.GetChildren()) {
+            control.QueueFree();
+        }
+
+        foreach (DataGroup dataGroup in dataGroups) {
+            dataGroup.points.Clear();
+
+            for (int i = 0; i < pointsCount; i++) {
+                var point = (TextureRect)pointPrefab.Instantiate();
+                point.Modulate = dataGroup.color;
+                point.Size = Vector2.One * pointsScale;
+                pointsParent.AddChild(point);
+                dataGroup.points.Add(point);
+            }
+        }
+
+    }
+
+
+}
