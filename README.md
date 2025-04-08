@@ -1,4 +1,5 @@
 # Charts
+![chartsGraphic](https://github.com/user-attachments/assets/e9213d35-c4ce-4d0c-be00-c89e8784f414)
 
 ## User-Friendly, Customizable Godot Tool for Graph Creation
 
