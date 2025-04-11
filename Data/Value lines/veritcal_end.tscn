@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bydyati2wplx3"]
 
-[ext_resource type="Script" uid="uid://8trasiy16kj" path="res://Value lines/ValueLine.cs" id="1_38w71"]
+[ext_resource type="Script" uid="uid://8trasiy16kj" path="res://Data/Value lines/ValueLine.cs" id="1_38w71"]
 
 [node name="veritcal_end" type="Control" node_paths=PackedStringArray("topLabel", "bottomLabel")]
 layout_mode = 3

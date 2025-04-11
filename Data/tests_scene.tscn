@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://unp1nqq50uds"]
 
-[ext_resource type="PackedScene" uid="uid://ct4nyvedk3n8r" path="res://graph_scene.tscn" id="1_a8xd0"]
-[ext_resource type="Script" uid="uid://bh2mk50gxsl62" path="res://DataGroup.cs" id="2_w1e2o"]
-[ext_resource type="Script" uid="uid://bav17d52kk2ot" path="res://ValueGenerator.cs" id="3_w1e2o"]
+[ext_resource type="PackedScene" uid="uid://ct4nyvedk3n8r" path="res://Data/graph_scene.tscn" id="1_a8xd0"]
+[ext_resource type="Script" uid="uid://bh2mk50gxsl62" path="res://Data/DataGroup.cs" id="2_w1e2o"]
+[ext_resource type="Script" uid="uid://bav17d52kk2ot" path="res://Data/ValueGenerator.cs" id="3_w1e2o"]
 
 [sub_resource type="Resource" id="Resource_01x0b"]
 script = ExtResource("2_w1e2o")

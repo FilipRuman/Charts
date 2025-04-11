@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://eej5ylbayrrt"]
 
-[ext_resource type="Texture2D" uid="uid://b6ckialoxvkfv" path="res://Sprites/circle.png" id="1_gawjq"]
+[ext_resource type="Texture2D" uid="uid://b6ckialoxvkfv" path="res://Data/Sprites/circle.png" id="1_gawjq"]
 
 [node name="Point" type="TextureRect"]
 offset_right = 50.0

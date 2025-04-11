@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://crixpc01ettlj"]
 
-[ext_resource type="Script" uid="uid://8trasiy16kj" path="res://Value lines/ValueLine.cs" id="1_yhi4u"]
+[ext_resource type="Script" uid="uid://8trasiy16kj" path="res://Data/Value lines/ValueLine.cs" id="1_yhi4u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8aco3"]
 bg_color = Color(1, 1, 1, 0.745098)
