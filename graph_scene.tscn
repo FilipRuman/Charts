@@ -15,12 +15,14 @@
 script = ExtResource("3_kftwd")
 color = Color(1, 0, 0, 1)
 name = "Horse power"
+averagePoolSize = 4
 metadata/_custom_type_script = "uid://bh2mk50gxsl62"
 
 [sub_resource type="Resource" id="Resource_0y8es"]
 script = ExtResource("3_kftwd")
 color = Color(0, 0, 1, 1)
 name = "Torque N"
+averagePoolSize = 4
 metadata/_custom_type_script = "uid://bh2mk50gxsl62"
 
 [node name="Graph scene" type="Control" node_paths=PackedStringArray("valueLineManager", "pointsParent", "valueNameLabel", "domainNameLabel", "dataGroupVisualizationLayout")]
@@ -34,7 +36,7 @@ script = ExtResource("1_aaqvk")
 valueLineManager = NodePath("Padding/Value line manager")
 pointPrefab = ExtResource("2_kftwd")
 pointsParent = NodePath("Padding/PointsParent")
-valueRange = Vector2(10, -10)
+valueRange = Vector2(-10, 10)
 domainRange = Vector2(0, 10)
 valueName = "Horse power"
 domainName = "time"
@@ -44,6 +46,7 @@ pointsCount = 1000
 dataGroups = [SubResource("Resource_b6mq7"), SubResource("Resource_0y8es")]
 dataGroupVisualizationLayout = NodePath("Data groups layout")
 dataGroupVisualizationpPrefab = ExtResource("3_aaqvk")
+pointsScale = 5.0
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
